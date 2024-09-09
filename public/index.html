@@ -19,6 +19,12 @@
             padding: 8px;
             text-align: left;
         }
+        #favorites {
+            margin-top: 20px;
+        }
+        select {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -26,6 +32,11 @@
     <input type="text" id="zipCode" placeholder="Enter ZIP code">
     <button id="getForecast">Get Forecast</button>
     <button id="toggleUnit" disabled>Switch to Celsius</button>
+    <div id="favorites">
+        <select id="favoritesList"></select>
+        <button id="addFavorite" disabled>Add to Favorites</button>
+        <button id="deleteFavorite" disabled>Delete</button>
+    </div>
     <div id="weatherData">
         <h3>Current Temperature: <span id="currentTemp">-</span></h3>
         <h3>ZIP Code Location: <span id="zipLocation">-</span></h3>
@@ -48,15 +59,25 @@
         const zipCodeInput = document.getElementById('zipCode');
         const getForecastBtn = document.getElementById('getForecast');
         const toggleUnitBtn = document.getElementById('toggleUnit');
+        const addFavoriteBtn = document.getElementById('addFavorite');
+        const deleteFavoriteBtn = document.getElementById('deleteFavorite');
         const currentTempElement = document.getElementById('currentTemp');
         const zipLocationElement = document.getElementById('zipLocation');
         const forecastBodyElement = document.getElementById('forecastBody');
+        const favoritesListElement = document.getElementById('favoritesList');
 
         let weatherData = null;
         let isCelsius = false;
+        let favorites = [];
 
         getForecastBtn.addEventListener('click', getWeatherData);
         toggleUnitBtn.addEventListener('click', toggleTemperatureUnit);
+        addFavoriteBtn.addEventListener('click', addFavorite);
+        deleteFavoriteBtn.addEventListener('click', deleteFavorite);
+        favoritesListElement.addEventListener('change', onFavoriteSelect);
+
+        // Initial load of favorites
+        getFavorites();
 
         async function getWeatherData() {
             const zipCode = zipCodeInput.value.trim();
@@ -77,6 +98,7 @@
                 weatherData = await response.json();
                 displayWeatherData();
                 toggleUnitBtn.disabled = false;
+                updateFavoritesUI();
             } catch (error) {
                 alert(error.message);
             }
