@@ -134,6 +134,117 @@
             toggleUnitBtn.textContent = isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius';
             displayWeatherData();
         }
+
+        async function addFavorite() {
+            if (!weatherData) return;
+
+            const zipCode = zipCodeInput.value.trim();
+            const location = `${weatherData.location.name}, ${weatherData.location.region}`;
+            console.log(zipCode);
+            
+            try {
+                const response = await fetch('/favorites', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ zipCode, location }),
+                });
+                console.log(zipCode);
+
+                console.log(JSON.stringify({ zipCode, location }));
+                if (!response.ok) {
+                    throw new Error('Failed to add favorite');
+                }
+                await getFavorites();
+                updateFavoritesUI();
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        async function getFavorites() {
+            try {
+                const response = await fetch('/favorites');
+                if (!response.ok) {
+                    throw new Error('Failed to get favorites');
+                }
+                favorites = await response.json();
+                updateFavoritesDropdown();
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        function updateFavoritesDropdown() {
+            favoritesListElement.innerHTML = '';
+            
+            if (favorites.length === 0) {
+                const option = new Option('No Favorites', '');
+                favoritesListElement.add(option);
+            } else {
+                const defaultOption = new Option('Select a favorite', '');
+                favoritesListElement.add(defaultOption);
+                favorites.forEach(favorite => {
+                    const option = new Option(favorite.location, favorite.zipCode);
+                    favoritesListElement.add(option);
+                });
+            }
+        }
+
+        function updateFavoritesUI() {
+            if (!weatherData) {
+                addFavoriteBtn.disabled = true;
+                deleteFavoriteBtn.disabled = true;
+                return;
+            }
+
+            const currentZipCode = zipCodeInput.value.trim();
+            const isFavorite = favorites.some(fav => fav.zipCode === currentZipCode);
+
+            addFavoriteBtn.disabled = isFavorite;
+            deleteFavoriteBtn.disabled = !isFavorite;
+
+            if (isFavorite) {
+                favoritesListElement.value = currentZipCode;
+            } else {
+                favoritesListElement.value = '';
+            }
+        }
+
+        async function deleteFavorite() {
+            const zipCode = zipCodeInput.value.trim();
+            
+            try {
+                const response = await fetch(`/favorites/${zipCode}`, {
+                    method: 'DELETE',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to delete favorite');
+                }
+                await getFavorites();
+                resetWeatherDisplay();
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        function resetWeatherDisplay() {
+            weatherData = null;
+            currentTempElement.textContent = '-';
+            zipLocationElement.textContent = '-';
+            forecastBodyElement.innerHTML = '';
+            toggleUnitBtn.disabled = true;
+            updateFavoritesUI();
+        }
+
+        function onFavoriteSelect() {
+            const selectedZipCode = favoritesListElement.value;
+            if (selectedZipCode) {
+                zipCodeInput.value = selectedZipCode;
+                getWeatherData();
+            }
+        }
     </script>
 </body>
 </html>
