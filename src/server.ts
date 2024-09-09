@@ -39,7 +39,7 @@ app.delete('/favorites/:zipCode', (req, res) => {
     return res.status(404).json({ error: 'Favorite not found' });
   }
   favorites.splice(index, 1);
-  res.status(204).send();
+  res.status(200).send();
 });
 
 app.listen(port, () => {
