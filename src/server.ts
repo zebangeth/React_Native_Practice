@@ -17,12 +17,11 @@ app.get('/favorites', (req, res) => {
 });
 
 app.post('/favorites', (req, res) => {
-  console.log(req.body);
   const { zipCode, location } = req.body;
   if (!zipCode || !location) {
     return res.status(400).json({ error: 'Zip code and location are required' });
   }
-  const existingIndex = favorites.findIndex(fav => fav.zipCode === zipCode);
+  const existingIndex = favorites.findIndex(fav => fav.location === location);
   if (existingIndex !== -1) {
     return res.status(400).json({ error: 'Favorite already exists' });
   }
@@ -32,9 +31,9 @@ app.post('/favorites', (req, res) => {
   console.log(`Favorite added: ${zipCode} - ${location}`);
 });
 
-app.delete('/favorites/:zipCode', (req, res) => {
-  const { zipCode } = req.params;
-  const index = favorites.findIndex(fav => fav.zipCode === zipCode);
+app.delete('/favorites/:location', (req, res) => {
+  const { location } = req.params;
+  const index = favorites.findIndex(fav => fav.location === decodeURIComponent(location));
   if (index === -1) {
     return res.status(404).json({ error: 'Favorite not found' });
   }
