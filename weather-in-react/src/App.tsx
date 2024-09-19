@@ -7,6 +7,7 @@ import UnitToggle from './components/UnitToggle';
 import WeatherDetails from './components/WeatherDetails';
 import ForecastList from './components/Forecast';
 import { getWeatherData } from './api/weatherApi';
+import './styles/Weather.css';
 
 const App: React.FC = () => {
   const [zipCode, setZipCode] = useState<string>('');
