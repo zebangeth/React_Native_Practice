@@ -1,0 +1,217 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #000000;
+  background-color: #000000;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App {
+  background-color: #d9d9d9;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 20px;
+  width: 800px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #024878;
+  border-radius: 0;
+  margin-bottom: 10px;
+  background-color: #024878;
+  color: white;
+}
+
+input[type="text"]::placeholder {
+  color: white;
+}
+
+button {
+  background-color: #024878;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 0;
+  margin-right: 10px;
+}
+
+button:disabled {
+  background-color: #024878;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+.current-weather {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.current-weather h3 {
+  font-size: 42px;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+.current-weather p {
+  font-size: 22px;
+}
+
+.favorites-manager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align items vertically */
+  margin-bottom: 20px;
+}
+
+.favorites-manager button {
+  background-color: #1a466e; /* Dark blue background */
+  color: white;
+  border: none;
+  padding: 15px 30px; /* Increased padding for larger buttons */
+  font-size: 14px; /* Larger font size for text */
+  cursor: pointer;
+  border-radius: 10px; /* Rounded corners for the button */
+}
+
+.favorites-manager button:disabled {
+  background-color: #024878;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+.favorites-manager select {
+  flex-grow: 1;
+  margin: 0 20px; /* Increased space between the dropdown and buttons */
+  padding: 12px;
+  font-size: 14px; /* Larger font size for better readability */
+  border: 2px solid #1a466e; /* Dark blue border */
+  border-radius: 10px; /* Rounded corners for the dropdown */
+  background-color: #1a466e; /* Dark blue background */
+  color: white; /* White text */
+}
+
+.favorites-manager select option {
+  background-color: white; /* White background for options */
+  color: black; /* Black text for options */
+}
+
+.unit-toggle {
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+  background-color: #024878;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.sunrise-sunset,
+.wind-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #a9cee7;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  font-size: 18px;
+  color: #000;
+}
+
+.sunrise-sunset p,
+.wind-info p {
+  margin: 5px 0; /* Consistent spacing between paragraphs */
+}
+
+.wind-info p:first-child {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.wind-info p:nth-child(2) {
+  font-size: 26px;
+}
+
+.sunrise-sunset p {
+  font-size: 22px;
+}
+
+.forecast-list {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forecast-items {
+  display: flex;
+  justify-content: space-between; /* Distributes items with equal space between them */
+  margin: 20px 0; /* Adds margin to the container */
+}
+
+.forecast-item {
+  background-color: #c8d6df; /* Light blue background */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: calc(33% - 20px);
+  margin-right: 20px; /* Right margin for each forecast item */
+}
+
+.forecast-item:last-child {
+  margin-right: 0; /* No margin for the last item */
+}
+
+.forecast-item p {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.forecast-item p:first-child {
+  font-weight: bold;
+  font-size: 20px; /* Slightly larger font for the date */
+}
+
+.forecast-item img {
+  width: 40px;
+  height: 40px;
+  margin-top: 15px;
+}
+
+/* For alignment purposes */
+.forecast-items img {
+  display: block;
+  margin: 0 auto;
+}
+
+.zip-code-prompt {
+  text-align: center;
+  margin-bottom: 20px;
+  color: black;
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.zip-code-input {
+  margin: 5px auto;
+  width: 150px;
+  align-items: center;
+}
+
+.get-forecast-button {
+  background-color: #024878;
+  margin: 5px auto;
+  width: 150px;
+}
