@@ -45,23 +45,19 @@ const App: React.FC = () => {
     <div className="App">
       <Header />
       <WeatherSearch onSearch={handleSearch} />
-      {weatherData && (
-        <>
-          <CurrentWeather 
-            data={weatherData.current} 
-            location={weatherData.location}
-            isMetric={isMetric} 
-          />
-          <FavoritesManager
-            currentZipCode={zipCode}
-            currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
-            onSelectFavorite={handleSelectFavorite}
-          />
-          <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
-          <WeatherDetails data={weatherData} isMetric={isMetric} />
-          <ForecastList forecast={weatherData.forecast.forecastday} isMetric={isMetric} />
-        </>
-      )}
+      <CurrentWeather 
+        data={weatherData?.current} 
+        location={weatherData?.location}
+        isMetric={isMetric} 
+      />
+      <FavoritesManager
+        currentZipCode={zipCode}
+        currentLocation={weatherData ? `${weatherData.location.name}, ${weatherData.location.region}` : ''}
+        onSelectFavorite={handleSelectFavorite}
+      />
+      <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
+      <WeatherDetails data={weatherData} isMetric={isMetric} />
+      <ForecastList forecast={weatherData?.forecast?.forecastday} isMetric={isMetric} />
     </div>
   );
 };
