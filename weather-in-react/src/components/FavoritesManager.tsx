@@ -5,12 +5,14 @@ interface FavoritesManagerProps {
   currentZipCode: string;
   currentLocation: string;
   onSelectFavorite: (zipCode: string) => void;
+  onDeleteFavorite: () => void;
 }
 
 const FavoritesManager: React.FC<FavoritesManagerProps> = ({
   currentZipCode,
   currentLocation,
   onSelectFavorite,
+  onDeleteFavorite,
 }) => {
   const [favorites, setFavorites] = useState<
     Array<{ zipCode: string; location: string }>
@@ -42,6 +44,7 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
     try {
       await deleteFavorite(currentZipCode);
       loadFavorites();
+      onDeleteFavorite(); // Call the onDeleteFavorite function to reset the app
     } catch (error) {
       console.error("Error deleting favorite:", error);
     }

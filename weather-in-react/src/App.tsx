@@ -48,6 +48,12 @@ const App: React.FC = () => {
     setZipCode(selectedZipCode);
   };
 
+  const resetApp = () => {
+    setZipCode("");
+    setWeatherData(null);
+    setIsMetric(false);
+  };
+
   return (
     <div className="App">
       <Header />
@@ -65,6 +71,7 @@ const App: React.FC = () => {
             : ""
         }
         onSelectFavorite={handleSelectFavorite}
+        onDeleteFavorite={resetApp}
       />
       <UnitToggle
         data={weatherData}
