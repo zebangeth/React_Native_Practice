@@ -27,6 +27,11 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error fetching weather data:', error);
       // Handle error (e.g., show error message to user)
+      if (error instanceof Error) {
+        alert('Error fetching weather data\nPlease check the ZIP code and try again');
+      } else {
+        alert('An unknown error occurred');
+      }
     }
   };
 
