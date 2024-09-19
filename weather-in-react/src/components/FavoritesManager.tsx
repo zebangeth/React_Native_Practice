@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getFavorites, addFavorite, deleteFavorite } from '../api/favoritesApi';
+import React, { useState, useEffect } from "react";
+import { getFavorites, addFavorite, deleteFavorite } from "../api/favoritesApi";
 
 interface FavoritesManagerProps {
   currentZipCode: string;
@@ -12,7 +12,9 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
   currentLocation,
   onSelectFavorite,
 }) => {
-  const [favorites, setFavorites] = useState<Array<{ zipCode: string; location: string }>>([]);
+  const [favorites, setFavorites] = useState<
+    Array<{ zipCode: string; location: string }>
+  >([]);
 
   useEffect(() => {
     loadFavorites();
@@ -23,7 +25,7 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
       const favoritesData = await getFavorites();
       setFavorites(favoritesData);
     } catch (error) {
-      console.error('Error loading favorites:', error);
+      console.error("Error loading favorites:", error);
     }
   };
 
@@ -32,7 +34,7 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
       await addFavorite(currentZipCode, currentLocation);
       loadFavorites();
     } catch (error) {
-      console.error('Error adding favorite:', error);
+      console.error("Error adding favorite:", error);
     }
   };
 
@@ -41,19 +43,25 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
       await deleteFavorite(currentZipCode);
       loadFavorites();
     } catch (error) {
-      console.error('Error deleting favorite:', error);
+      console.error("Error deleting favorite:", error);
     }
   };
 
-  const isFavorite = favorites.some(fav => fav.zipCode === currentZipCode);
+  const isFavorite = favorites.some((fav) => fav.zipCode === currentZipCode);
 
   return (
     <div className="favorites-manager">
-      <button onClick={handleAddFavorite} disabled={isFavorite || !currentZipCode}>
+      <button
+        onClick={handleAddFavorite}
+        disabled={isFavorite || !currentZipCode}
+      >
         Add to Favorites
       </button>
       <p>Go to favorite:</p>
-      <select onChange={(e) => onSelectFavorite(e.target.value)} value={currentZipCode}>
+      <select
+        onChange={(e) => onSelectFavorite(e.target.value)}
+        value={currentZipCode}
+      >
         <option value="">Select favorite</option>
         {favorites.map((fav) => (
           <option key={fav.zipCode} value={fav.zipCode}>
@@ -61,7 +69,10 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
           </option>
         ))}
       </select>
-      <button onClick={handleDeleteFavorite} disabled={!isFavorite || !currentZipCode}>
+      <button
+        onClick={handleDeleteFavorite}
+        disabled={!isFavorite || !currentZipCode}
+      >
         Delete Favorite
       </button>
     </div>

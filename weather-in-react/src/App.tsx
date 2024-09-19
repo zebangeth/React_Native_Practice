@@ -56,7 +56,7 @@ const App: React.FC = () => {
         currentLocation={weatherData ? `${weatherData.location.name}, ${weatherData.location.region}` : ''}
         onSelectFavorite={handleSelectFavorite}
       />
-      <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
+      <UnitToggle data={weatherData} isMetric={isMetric} onToggle={toggleUnit} />
       <WeatherDetails data={weatherData} isMetric={isMetric} />
       <ForecastList forecast={weatherData?.forecast?.forecastday} isMetric={isMetric} />
     </div>

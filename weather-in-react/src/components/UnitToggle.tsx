@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 
 interface UnitToggleProps {
+  data: any;
   isMetric: boolean;
   onToggle: () => void;
 }
 
-const UnitToggle: React.FC<UnitToggleProps> = ({ isMetric, onToggle }) => {
+const UnitToggle: React.FC<UnitToggleProps> = ({ data, isMetric, onToggle }) => {
   return (
-    <button onClick={onToggle} className="unit-toggle">
-      Switch to {isMetric ? 'Imperial' : 'Metric'}
+    <button onClick={onToggle} disabled={!data} className="unit-toggle">
+      Switch to {isMetric ? "Imperial" : "Metric"}
     </button>
   );
 };
