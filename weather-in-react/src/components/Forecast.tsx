@@ -30,9 +30,7 @@ const ForecastList: React.FC<ForecastListProps> = ({ forecast, isMetric }) => {
     return (
       <div className="forecast-list">
         <h3>3 Day Forecast</h3>
-        <div className="forecast-items">
-          <p>No forecast data available</p>
-        </div>
+        <p>No forecast data available</p>
       </div>
     );
   }
