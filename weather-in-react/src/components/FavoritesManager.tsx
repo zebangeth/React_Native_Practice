@@ -49,18 +49,18 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
 
   return (
     <div className="favorites-manager">
-      <button onClick={handleAddFavorite} disabled={isFavorite}>
+      <button onClick={handleAddFavorite} disabled={isFavorite || !currentZipCode}>
         Add to Favorites
       </button>
       <select onChange={(e) => onSelectFavorite(e.target.value)} value={currentZipCode}>
         <option value="">Go to favorite:</option>
         {favorites.map((fav) => (
           <option key={fav.zipCode} value={fav.zipCode}>
-            {fav.location}
+            {`${fav.location} (${fav.zipCode})`}
           </option>
         ))}
       </select>
-      <button onClick={handleDeleteFavorite} disabled={!isFavorite}>
+      <button onClick={handleDeleteFavorite} disabled={!isFavorite || !currentZipCode}>
         Delete Favorite
       </button>
     </div>
