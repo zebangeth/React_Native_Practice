@@ -17,7 +17,6 @@ app.get('/favorites', (req, res) => {
 });
 
 app.post('/favorites', (req, res) => {
-  console.log(req.body);
   const { zipCode, location } = req.body;
   if (!zipCode || !location) {
     return res.status(400).json({ error: 'Zip code and location are required' });
@@ -29,7 +28,6 @@ app.post('/favorites', (req, res) => {
   const newFavorite = { zipCode, location };
   favorites.push(newFavorite);
   res.status(201).json(newFavorite);
-  console.log(`Favorite added: ${zipCode} - ${location}`);
 });
 
 app.delete('/favorites/:zipCode', (req, res) => {
