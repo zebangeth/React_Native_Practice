@@ -11,7 +11,7 @@ body {
 }
 
 .App {
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 0;
   box-shadow: none;
   padding: 20px;
@@ -72,7 +72,7 @@ button:disabled {
 }
 
 .favorites-manager button {
-  background-color: #1A466E; /* Dark blue background */
+  background-color: #1a466e; /* Dark blue background */
   color: white;
   border: none;
   padding: 15px 30px; /* Increased padding for larger buttons */
@@ -92,9 +92,9 @@ button:disabled {
   margin: 0 20px; /* Increased space between the dropdown and buttons */
   padding: 12px;
   font-size: 14px; /* Larger font size for better readability */
-  border: 2px solid #1A466E; /* Dark blue border */
+  border: 2px solid #1a466e; /* Dark blue border */
   border-radius: 10px; /* Rounded corners for the dropdown */
-  background-color: #1A466E; /* Dark blue background */
+  background-color: #1a466e; /* Dark blue background */
   color: white; /* White text */
 }
 
@@ -118,12 +118,13 @@ button:disabled {
   margin-right: 60px;
 }
 
-.sunrise-sunset, .wind-info {
+.sunrise-sunset,
+.wind-info {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #A9CEE7;
+  background-color: #a9cee7;
   padding: 20px;
   border-radius: 10px;
   width: 200px;
@@ -131,20 +132,21 @@ button:disabled {
   color: #000;
 }
 
-.sunrise-sunset p, .wind-info p {
+.sunrise-sunset p,
+.wind-info p {
   margin: 5px 0; /* Consistent spacing between paragraphs */
 }
 
-.wind-info p:first-child{
+.wind-info p:first-child {
   font-weight: bold;
   font-size: 22px;
 }
 
-.wind-info p:nth-child(2){
+.wind-info p:nth-child(2) {
   font-size: 26px;
 }
 
-.sunrise-sunset p{
+.sunrise-sunset p {
   font-size: 22px;
 }
 
@@ -160,7 +162,7 @@ button:disabled {
 }
 
 .forecast-item {
-  background-color: #C8D6DF; /* Light blue background */
+  background-color: #c8d6df; /* Light blue background */
   padding: 20px;
   border-radius: 10px;
   text-align: center;
