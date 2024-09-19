@@ -15,7 +15,7 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data, isMetric }) => {
         </div>
         <div className="wind-info">
           <p>Wind</p>
-          <p>- -</p>
+          <p>-</p>
           <p>-</p>
         </div>
       </div>

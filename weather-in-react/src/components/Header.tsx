@@ -3,7 +3,7 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     <header>
-      <h1>Enter a Zip Code</h1>
+      <h3 className="zip-code-prompt">Enter a Zip Code</h3>
     </header>
   );
 };

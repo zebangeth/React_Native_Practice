@@ -15,14 +15,17 @@ const WeatherSearch: React.FC<WeatherSearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <input
         type="text"
         value={inputZipCode}
         onChange={(e) => setInputZipCode(e.target.value)}
         placeholder="Enter ZIP code"
+        className="zip-code-input"
+        style={{ marginBottom: '10px', padding: '10px', width: '200px' }}
       />
-      <button type="submit">Get Forecast</button>
+      
+      <button type="submit" className="get-forecast-button" style={{ padding: '10px 20px' } }>Get Forecast</button>
     </form>
   );
 };

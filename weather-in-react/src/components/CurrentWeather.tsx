@@ -13,7 +13,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, location, isMetri
   if (!data || !location) {
     return (
       <div className="current-weather">
-        <h2>-</h2>
+        <h3>-</h3>
         <p>Feels like -</p>
         <h3>-</h3>
       </div>
@@ -26,9 +26,9 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, location, isMetri
 
   return (
     <div className="current-weather">
-      <h2>{`${temperature}° ${unit}`}</h2>
+      <h3>{`${Math.round(temperature)}° ${unit}`}</h3>
       <p>{`Feels like ${feelsLike}° ${unit}`}</p>
-      <h3>{location.name}, {location.region}</h3>
+      <h3>{`${location.name}, ${location.region}`}</h3>
     </div>
   );
 };

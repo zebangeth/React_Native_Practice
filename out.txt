@@ -1,0 +1,545 @@
+weather-in-react/src Directory Structure:
+src/
+├── App.tsx
+├── main.tsx
+├── index.css
+├── vite-env.d.ts
+├── components/
+│   ├── WeatherSearch.tsx
+│   ├── WeatherDetails.tsx
+│   ├── FavoritesManager.tsx
+│   ├── CurrentWeather.tsx
+│   ├── Header.tsx
+│   ├── WeatherDisplay.tsx
+│   ├── UnitToggle.tsx
+│   ├── Forecast.tsx
+├── api/
+│   ├── favoritesApi.ts
+│   ├── weatherApi.ts
+
+App.tsx:
+```
+import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
+import WeatherSearch from './components/WeatherSearch';
+import CurrentWeather from './components/CurrentWeather';
+import FavoritesManager from './components/FavoritesManager';
+import UnitToggle from './components/UnitToggle';
+import WeatherDetails from './components/WeatherDetails';
+import ForecastList from './components/Forecast';
+import { getWeatherData } from './api/weatherApi';
+
+const App: React.FC = () => {
+  const [zipCode, setZipCode] = useState<string>('');
+  const [weatherData, setWeatherData] = useState<any>(null);
+  const [isMetric, setIsMetric] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (zipCode) {
+      fetchWeatherData();
+    }
+  }, [zipCode]);
+
+  const fetchWeatherData = async () => {
+    try {
+      const data = await getWeatherData(zipCode);
+      setWeatherData(data);
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
+
+  const handleSearch = (newZipCode: string) => {
+    setZipCode(newZipCode);
+  };
+
+  const toggleUnit = () => {
+    setIsMetric(!isMetric);
+  };
+
+  const handleSelectFavorite = (selectedZipCode: string) => {
+    setZipCode(selectedZipCode);
+  };
+
+  return (
+    <div className="App">
+      <Header />
+      <WeatherSearch onSearch={handleSearch} />
+      {weatherData && (
+        <>
+          <CurrentWeather 
+            data={weatherData.current} 
+            location={weatherData.location}
+            isMetric={isMetric} 
+          />
+          <FavoritesManager
+            currentZipCode={zipCode}
+            currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
+            onSelectFavorite={handleSelectFavorite}
+          />
+          <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
+          <WeatherDetails data={weatherData} isMetric={isMetric} />
+          <ForecastList forecast={weatherData.forecast.forecastday} isMetric={isMetric} />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+main.tsx:
+```
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+```
+
+index.css:
+```
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+```
+
+vite-env.d.ts:
+```
+/// <reference types="vite/client" />
+
+```
+
+components/WeatherSearch.tsx:
+```
+import React, { useState } from 'react';
+
+interface WeatherSearchProps {
+  onSearch: (zipCode: string) => void;
+}
+
+const WeatherSearch: React.FC<WeatherSearchProps> = ({ onSearch }) => {
+  const [inputZipCode, setInputZipCode] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputZipCode.trim()) {
+      onSearch(inputZipCode.trim());
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={inputZipCode}
+        onChange={(e) => setInputZipCode(e.target.value)}
+        placeholder="Enter ZIP code"
+      />
+      <button type="submit">Get Forecast</button>
+    </form>
+  );
+};
+
+export default WeatherSearch;
+
+```
+
+components/WeatherDetails.tsx:
+```
+import React from 'react';
+
+interface WeatherDetailsProps {
+  data: any;
+  isMetric: boolean;
+}
+
+const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data, isMetric }) => {
+  const windSpeed = isMetric ? data.current.wind_kph : data.current.wind_mph;
+  const windUnit = isMetric ? 'KPH' : 'MPH';
+
+  return (
+    <div className="weather-details">
+      <div className="sunrise-sunset">
+        <p>Sunrise: {data.forecast.forecastday[0].astro.sunrise}</p>
+        <p>Sunset: {data.forecast.forecastday[0].astro.sunset}</p>
+      </div>
+      <div className="wind-info">
+        <p>Wind</p>
+        <p>{windSpeed} {windUnit}</p>
+        <p>{data.current.wind_dir}</p>
+      </div>
+    </div>
+  );
+};
+
+export default WeatherDetails;
+
+```
+
+components/FavoritesManager.tsx:
+```
+import React, { useState, useEffect } from 'react';
+import { getFavorites, addFavorite, deleteFavorite } from '../api/favoritesApi';
+
+interface FavoritesManagerProps {
+  currentZipCode: string;
+  currentLocation: string;
+  onSelectFavorite: (zipCode: string) => void;
+}
+
+const FavoritesManager: React.FC<FavoritesManagerProps> = ({
+  currentZipCode,
+  currentLocation,
+  onSelectFavorite,
+}) => {
+  const [favorites, setFavorites] = useState<Array<{ zipCode: string; location: string }>>([]);
+
+  useEffect(() => {
+    loadFavorites();
+  }, []);
+
+  const loadFavorites = async () => {
+    try {
+      const favoritesData = await getFavorites();
+      setFavorites(favoritesData);
+    } catch (error) {
+      console.error('Error loading favorites:', error);
+    }
+  };
+
+  const handleAddFavorite = async () => {
+    try {
+      await addFavorite(currentZipCode, currentLocation);
+      loadFavorites();
+    } catch (error) {
+      console.error('Error adding favorite:', error);
+    }
+  };
+
+  const handleDeleteFavorite = async () => {
+    try {
+      await deleteFavorite(currentZipCode);
+      loadFavorites();
+    } catch (error) {
+      console.error('Error deleting favorite:', error);
+    }
+  };
+
+  const isFavorite = favorites.some(fav => fav.zipCode === currentZipCode);
+
+  return (
+    <div className="favorites-manager">
+      <button onClick={handleAddFavorite} disabled={isFavorite}>
+        Add to Favorites
+      </button>
+      <select onChange={(e) => onSelectFavorite(e.target.value)} value={currentZipCode}>
+        <option value="">Go to favorite:</option>
+        {favorites.map((fav) => (
+          <option key={fav.zipCode} value={fav.zipCode}>
+            {fav.location}
+          </option>
+        ))}
+      </select>
+      <button onClick={handleDeleteFavorite} disabled={!isFavorite}>
+        Delete Favorite
+      </button>
+    </div>
+  );
+};
+
+export default FavoritesManager;
+
+```
+
+components/CurrentWeather.tsx:
+```
+import React from 'react';
+
+interface CurrentWeatherProps {
+  data: any;
+  location: {
+    name: string;
+    region: string;
+  };
+  isMetric: boolean;
+}
+
+const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, location, isMetric }) => {
+  const temperature = isMetric ? data.temp_c : data.temp_f;
+  const feelsLike = isMetric ? data.feelslike_c : data.feelslike_f;
+  const unit = isMetric ? 'C' : 'F';
+
+  return (
+    <div className="current-weather">
+      <h2>{`${temperature}° ${unit}`}</h2>
+      <p>{`Feels like ${feelsLike}° ${unit}`}</p>
+      <h3>{location.name}, {location.region}</h3>
+    </div>
+  );
+};
+
+export default CurrentWeather;
+
+```
+
+components/Header.tsx:
+```
+import React from 'react';
+
+const Header: React.FC = () => {
+  return (
+    <header>
+      <h1>Enter a Zip Code</h1>
+    </header>
+  );
+};
+
+export default Header;
+
+```
+
+components/WeatherDisplay.tsx:
+```
+import React from 'react';
+import CurrentWeather from './CurrentWeather';
+import FavoritesManager from './FavoritesManager';
+import UnitToggle from './UnitToggle';
+import WeatherDetails from './WeatherDetails';
+import ForecastList from './Forecast';
+
+interface WeatherDisplayProps {
+  weatherData: any;
+  isMetric: boolean;
+  onToggleUnit: () => void;
+}
+
+const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
+  weatherData,
+  isMetric,
+  onToggleUnit,
+}) => {
+  return (
+    <div className="weather-display">
+      <CurrentWeather data={weatherData.current} isMetric={isMetric} />
+      <FavoritesManager />
+      <UnitToggle isMetric={isMetric} onToggle={onToggleUnit} />
+      <WeatherDetails data={weatherData} isMetric={isMetric} />
+      <ForecastList forecast={weatherData.forecast} isMetric={isMetric} />
+    </div>
+  );
+};
+
+export default WeatherDisplay;
+
+```
+
+components/UnitToggle.tsx:
+```
+import React from 'react';
+
+interface UnitToggleProps {
+  isMetric: boolean;
+  onToggle: () => void;
+}
+
+const UnitToggle: React.FC<UnitToggleProps> = ({ isMetric, onToggle }) => {
+  return (
+    <button onClick={onToggle} className="unit-toggle">
+      Switch to {isMetric ? 'Imperial' : 'Metric'}
+    </button>
+  );
+};
+
+export default UnitToggle;
+
+```
+
+components/Forecast.tsx:
+```
+import React from 'react';
+
+interface ForecastItemProps {
+  data: any;
+  isMetric: boolean;
+}
+
+const ForecastItem: React.FC<ForecastItemProps> = ({ data, isMetric }) => {
+  const highTemp = isMetric ? data.day.maxtemp_c : data.day.maxtemp_f;
+  const lowTemp = isMetric ? data.day.mintemp_c : data.day.mintemp_f;
+  const unit = isMetric ? 'C' : 'F';
+
+  return (
+    <div className="forecast-item">
+      <p>{new Date(data.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
+      <p>H: {highTemp}° {unit}</p>
+      <p>L: {lowTemp}° {unit}</p>
+      <img src={data.day.condition.icon} alt={data.day.condition.text} />
+    </div>
+  );
+};
+
+interface ForecastListProps {
+  forecast: any[];
+  isMetric: boolean;
+}
+
+const ForecastList: React.FC<ForecastListProps> = ({ forecast, isMetric }) => {
+  return (
+    <div className="forecast-list">
+      <h3>3 Day Forecast</h3>
+      <div className="forecast-items">
+        {forecast.map((day, index) => (
+          <ForecastItem key={index} data={day} isMetric={isMetric} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ForecastList;
+
+```
+
+api/favoritesApi.ts:
+```
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:3000'; // Adjust this to match your backend URL
+
+interface Favorite {
+  zipCode: string;
+  location: string;
+}
+
+export const getFavorites = async (): Promise<Favorite[]> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/favorites`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    throw error;
+  }
+};
+
+export const addFavorite = async (zipCode: string, location: string): Promise<Favorite> => {
+  try {
+    const response = await axios.post(`${BASE_URL}/favorites`, { zipCode, location });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    throw error;
+  }
+};
+
+export const deleteFavorite = async (zipCode: string): Promise<void> => {
+  try {
+    await axios.delete(`${BASE_URL}/favorites/${zipCode}`);
+  } catch (error) {
+    console.error('Error deleting favorite:', error);
+    throw error;
+  }
+};
+
+```
+
+api/weatherApi.ts:
+```
+import axios from 'axios';
+
+const API_KEY = '38719d51c1034abb95922102243008';
+const BASE_URL = 'https://api.weatherapi.com/v1';
+
+export const getWeatherData = async (zipCode: string) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/forecast.json`, {
+      params: {
+        key: API_KEY,
+        q: zipCode,
+        days: 3,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+};
+
+```
+
