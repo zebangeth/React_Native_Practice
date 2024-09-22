@@ -20,18 +20,19 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data, isMetric }) => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.cardText}>
-          Sunrise: <Text style={styles.valueText}>{sunrise}</Text>
-          Sunset: <Text style={styles.valueText}>{sunset}</Text>
-        </Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Sunrise:  </Text>
+          <Text style={styles.value}>{sunrise}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Sunset:  </Text>
+          <Text style={styles.value}>{sunset}</Text>
+        </View>
       </View>
       <View style={styles.card}>
-        <Text style={styles.cardText}>
-          Wind: <Text style={styles.valueText}>{windSpeed} {windUnit}</Text>
-        </Text>
-        <Text style={styles.cardText}>
-          Direction: <Text style={styles.valueText}>{windDir}</Text>
-        </Text>
+        <Text style={styles.label}>Wind:</Text>
+        <Text style={styles.value}>{windSpeed} {windUnit}</Text>
+        <Text style={styles.value}>{windDir}</Text>
       </View>
     </View>
   );
@@ -43,18 +44,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   card: {
-    backgroundColor: '#a9cee7',
-    borderRadius: 8,
+    backgroundColor: '#A7D3FF',
+    borderRadius: 10,
     padding: 16,
     marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
-  cardText: {
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  label: {
     fontSize: 18,
-    color: '#000000',
-    marginBottom: 8,
+    color: '#666',
   },
-  valueText: {
+  value: {
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
 });
 
