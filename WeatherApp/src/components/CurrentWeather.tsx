@@ -15,7 +15,8 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, isMetric }) => {
     <View style={styles.container}>
       <Text style={styles.temperature}>{`${Math.round(temperature)}${unit}`}</Text>
       <Text style={styles.feelsLike}>{`Feels like ${Math.round(feelsLike)}${unit}`}</Text>
-      <Text style={styles.location}>{`${data.location.name}, ${data.location.region}`}</Text>
+      <Text style={styles.locationCity}>{data.location.name}</Text>
+      <Text style={styles.locationRegion}>{data.location.region}</Text>
     </View>
   );
 };
@@ -33,7 +34,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#555555',
   },
-  location: {
+  locationCity: {
+    fontSize: 32,
+    color: '#000000',
+  },
+  locationRegion: {
     fontSize: 24,
     color: '#000000',
   },
