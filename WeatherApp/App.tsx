@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from './src/components/Header';
 import CurrentWeather from './src/components/CurrentWeather';
@@ -50,24 +50,29 @@ const App: React.FC = () => {
   return (
     <SafeAreaProvider>
       <Header onPressSearch={openSearchModal} />
-      {weatherData ? (
-        <>
-          <CurrentWeather data={weatherData} isMetric={isMetric} />
-          <WeatherDetails data={weatherData} isMetric={isMetric} />
-          <FavoritesManager
-            currentZipCode={zipCode}
-            currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
-            onSelectFavorite={handleSearch}
-            refreshTrigger={refreshFavorites} // Pass refresh trigger
-          />
-          <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
-          <ForecastList forecast={weatherData.forecast.forecastday} isMetric={isMetric} />
-        </>
-      ) : (
-        <View style={styles.placeholder}>
-          <Text>Click on the search bar to enter a zip code</Text>
-        </View>
-      )}
+      <ScrollView 
+        contentContainerStyle={styles.scrollViewContent}
+        alwaysBounceVertical={false}
+      >
+        {weatherData ? (
+          <View style={styles.container}>
+            <CurrentWeather data={weatherData} isMetric={isMetric} />
+            <WeatherDetails data={weatherData} isMetric={isMetric} />
+            <FavoritesManager
+              currentZipCode={zipCode}
+              currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
+              onSelectFavorite={handleSearch}
+              refreshTrigger={refreshFavorites}
+            />
+            <ForecastList forecast={weatherData.forecast.forecastday} isMetric={isMetric} />
+            <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
+          </View>
+        ) : (
+          <View style={styles.placeholder}>
+            <Text>Click on the search bar to enter a zip code</Text>
+          </View>
+        )}
+      </ScrollView>
       <SearchModal
         visible={modalVisible}
         onClose={closeSearchModal}
@@ -78,6 +83,9 @@ const App: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
   },
