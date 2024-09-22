@@ -57,13 +57,13 @@ const App: React.FC = () => {
         {weatherData ? (
           <View style={styles.container}>
             <CurrentWeather data={weatherData} isMetric={isMetric} />
-            <WeatherDetails data={weatherData} isMetric={isMetric} />
             <FavoritesManager
               currentZipCode={zipCode}
               currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
               onSelectFavorite={handleSearch}
               refreshTrigger={refreshFavorites}
             />
+            <WeatherDetails data={weatherData} isMetric={isMetric} />
             <ForecastList forecast={weatherData.forecast.forecastday} isMetric={isMetric} />
             <UnitToggle isMetric={isMetric} onToggle={toggleUnit} />
           </View>

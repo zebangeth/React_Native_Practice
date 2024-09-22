@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { getFavorites, deleteFavorite } from '../api/favoritesApi';
 import { getWeatherData } from '../api/weatherApi';
 
@@ -92,13 +93,16 @@ const SearchModal: React.FC<SearchModalProps> = ({ visible, onClose, onSelectLoc
     <Modal visible={visible} animationType="slide">
       <SafeAreaView style={styles.modalContainer}>
         <View style={styles.searchHeader}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Enter a ZIP Code"
-            keyboardType="numeric"
-            value={zipCode}
-            onChangeText={setZipCode}
-          />
+          <View style={styles.searchInputContainer}>
+            <AntDesign name="search1" size={20} color="#999" style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Enter a ZIP Code"
+              keyboardType="numeric"
+              value={zipCode}
+              onChangeText={setZipCode}
+            />
+          </View>
           <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
@@ -149,12 +153,21 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
   },
-  searchInput: {
+  searchInputContainer: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#EEEEEE',
     borderRadius: 8,
-    padding: 12,
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    marginRight: 0,
+  },
+  searchInput: {
+    flex: 1,
     fontSize: 16,
+    padding: 10,
   },
   cancelButton: {
     marginLeft: 8,
