@@ -15,55 +15,72 @@ const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) =>
   const filteredHourlyData = date === today ? hourlyData.slice(currentHour) : hourlyData;
 
   const renderItem = ({ item }: { item: any }) => {
-    const time = item.time.split(' ')[1]; // Get the time part
+    const time = item.time.split(' ')[1];
     const temp = isMetric ? item.temp_c : item.temp_f;
     const unit = isMetric ? '°C' : '°F';
-    const condition = item.condition.text;
+    const humidity = item.humidity;
 
     return (
       <View style={styles.itemContainer}>
         <Text style={styles.time}>{time}</Text>
         <Image source={{ uri: `https:${item.condition.icon}` }} style={styles.icon} />
-        <Text style={styles.temp}>{`${temp}${unit}`}</Text>
-        <Text style={styles.condition}>{condition}</Text>
+        <Text style={styles.temp}>{`${temp} ${unit}`}</Text>
+        <Text style={styles.humidity}>{`${humidity}%`}</Text>
       </View>
     );
   };
 
   return (
-    <FlatList
-      data={filteredHourlyData}
-      keyExtractor={(item) => item.time_epoch.toString()}
-      renderItem={renderItem}
-      contentContainerStyle={styles.container}
-    />
+    <View style={styles.container}>
+      <Text style={styles.date}>{date}</Text>
+      <FlatList
+        data={filteredHourlyData}
+        keyExtractor={(item) => item.time_epoch.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 16,
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+    padding: 16,
+  },
+  date: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  listContainer: {
+    paddingVertical: 8,
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#c8d6df',
+    borderRadius: 10,
     padding: 16,
+    marginBottom: 8,
+    justifyContent: 'space-between',
   },
   time: {
     width: 60,
     fontSize: 16,
+    fontWeight: 'bold',
   },
   icon: {
-    width: 40,
-    height: 40,
-    marginHorizontal: 16,
+    width: 30,
+    height: 30,
   },
   temp: {
-    width: 60,
+    width: 80,
     fontSize: 16,
+    fontWeight: 'bold',
   },
-  condition: {
-    flex: 1,
+  humidity: {
     fontSize: 16,
   },
 });
