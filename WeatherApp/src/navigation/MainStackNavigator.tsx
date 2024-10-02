@@ -12,7 +12,7 @@ const MainStackNavigator: React.FC = () => {
     <Stack.Navigator>
       <Stack.Screen name="Weather" component={MainScreen} options={{ headerShown: false }} />
       <Stack.Screen name="HourlyForecast" component={HourlyForecastScreen} options={{ title: 'Hourly Forecast' }} />
-      <Stack.Screen name="Search" component={SearchScreen} options={{ presentation: 'modal', headerShown: true }} />
+      <Stack.Screen name="Search" component={SearchScreen} options={{ presentation: 'modal', headerShown: false }} />
     </Stack.Navigator>
   );
 };

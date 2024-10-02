@@ -16,7 +16,7 @@ const ManageFavoritesScreen: React.FC = () => {
   const navigation = useNavigation<ManageFavoritesScreenNavigationProp>();
 
   const handleSelectFavorite = (zip: string) => {
-    navigation.navigate('Home', {
+    navigation.navigate('Weather', {
       screen: 'Weather',
       params: { zipCode: zip },
     });
