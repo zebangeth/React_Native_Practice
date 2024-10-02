@@ -7,6 +7,6 @@ export type MainStackParamList = {
 };
 
 export type DrawerParamList = {
-  Weather: NavigatorScreenParams<MainStackParamList>;
+  Home: NavigatorScreenParams<MainStackParamList>;
   'Manage Favorites': undefined;
 };

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { FavoritesContext } from '../contexts/FavoritesContext';
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp, useTheme } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DrawerParamList, MainStackParamList } from '../navigation/types';
@@ -12,11 +12,47 @@ type ManageFavoritesScreenNavigationProp = CompositeNavigationProp<
 >;
 
 const ManageFavoritesScreen: React.FC = () => {
+  const { colors } = useTheme();
   const { favorites, removeFavorite } = useContext(FavoritesContext);
   const navigation = useNavigation<ManageFavoritesScreenNavigationProp>();
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: colors.background,
+    },
+    favoritesList: {},
+    favoriteItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    favoriteButton: {
+      flex: 1,
+    },
+    favoriteTextCity: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    favoriteTextRegion: {
+      fontSize: 14,
+      color: colors.text,
+    },
+    deleteButton: {
+      marginLeft: 8,
+      padding: 8,
+      backgroundColor: 'transparent',
+    },
+    deleteButtonText: {
+      fontSize: 18,
+      color: colors.primary,
+    },
+  });
+
   const handleSelectFavorite = (zip: string) => {
-    navigation.navigate('Weather', {
+    navigation.navigate('Home', {
       screen: 'Weather',
       params: { zipCode: zip },
     });
@@ -59,39 +95,5 @@ const ManageFavoritesScreen: React.FC = () => {
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  favoritesList: {},
-  favoriteItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  favoriteButton: {
-    flex: 1,
-  },
-  favoriteTextCity: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  favoriteTextRegion: {
-    fontSize: 14,
-    color: '#666666',
-  },
-  deleteButton: {
-    marginLeft: 8,
-    padding: 8,
-    backgroundColor: 'white',
-  },
-  deleteButtonText: {
-    fontSize: 18,
-    color: '#0A84FF',
-  },
-});
 
 export default ManageFavoritesScreen;

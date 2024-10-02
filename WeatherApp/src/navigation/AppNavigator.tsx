@@ -8,8 +8,8 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 
 const AppNavigator: React.FC = () => {
   return (
-    <Drawer.Navigator initialRouteName="Weather">
-      <Drawer.Screen name="Weather" component={MainStackNavigator} options={{ headerShown: true }} />
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={MainStackNavigator} options={{ headerShown: true }} />
       <Drawer.Screen name="Manage Favorites" component={ManageFavoritesScreen} />
     </Drawer.Navigator>
   );

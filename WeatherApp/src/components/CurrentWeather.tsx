@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 interface CurrentWeatherProps {
   data: any;
@@ -7,6 +8,31 @@ interface CurrentWeatherProps {
 }
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, isMetric }) => {
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      padding: 16,
+    },
+    temperature: {
+      fontSize: 64,
+      color: colors.text,
+    },
+    feelsLike: {
+      fontSize: 18,
+      color: colors.text,
+    },
+    locationCity: {
+      fontSize: 32,
+      color: colors.text,
+    },
+    locationRegion: {
+      fontSize: 24,
+      color: colors.text,
+    },
+  });
+
   const temperature = isMetric ? data.current.temp_c : data.current.temp_f;
   const feelsLike = isMetric ? data.current.feelslike_c : data.current.feelslike_f;
   const unit = isMetric ? '°C' : '°F';
@@ -20,28 +46,5 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, isMetric }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  temperature: {
-    fontSize: 64,
-    color: '#000000',
-  },
-  feelsLike: {
-    fontSize: 18,
-    color: '#555555',
-  },
-  locationCity: {
-    fontSize: 32,
-    color: '#000000',
-  },
-  locationRegion: {
-    fontSize: 24,
-    color: '#000000',
-  },
-});
 
 export default CurrentWeather;

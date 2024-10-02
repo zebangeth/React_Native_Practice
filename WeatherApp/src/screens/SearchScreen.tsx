@@ -15,15 +15,100 @@ import { getWeatherData } from '../api/weatherApi';
 import { FavoritesContext } from '../contexts/FavoritesContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
+import { useTheme } from '@react-navigation/native';
 
 type SearchScreenProps = NativeStackScreenProps<MainStackParamList, 'Search'>;
 
 const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const [zipCode, setZipCode] = useState<string>('');
   const [searchResult, setSearchResult] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const { favorites, removeFavorite } = useContext(FavoritesContext);
+
+  const styles = StyleSheet.create({
+    searchHeader: {
+      flexDirection: 'row',
+      padding: 16,
+      alignItems: 'center',
+      backgroundColor: colors.background,
+    },
+    searchInputContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+    },
+    searchIcon: {
+      marginRight: 0,
+    },
+    searchInput: {
+      flex: 1,
+      fontSize: 16,
+      padding: 10,
+      color: colors.text,
+    },
+    cancelButton: {
+      marginLeft: 8,
+    },
+    cancelButtonText: {
+      color: colors.primary,
+      fontSize: 16,
+    },
+    loader: {
+      marginTop: 16,
+    },
+    searchResult: {
+      padding: 16,
+      backgroundColor: colors.card,
+    },
+    resultText: {
+      fontSize: 18,
+      color: colors.text,
+    },
+    noResult: {
+      padding: 16,
+      fontSize: 16,
+      color: 'red',
+    },
+    favoritesTitle: {
+      padding: 16,
+      fontSize: 20,
+      color: colors.text,
+    },
+    favoritesList: {
+      paddingHorizontal: 16,
+    },
+    favoriteItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    favoriteButton: {
+      flex: 1,
+    },
+    favoriteTextCity: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    favoriteTextRegion: {
+      fontSize: 14,
+      color: colors.text,
+    },
+    deleteButton: {
+      marginLeft: 8,
+      padding: 8,
+      backgroundColor: 'transparent',
+    },
+    deleteButtonText: {
+      fontSize: 18,
+      color: colors.primary,
+    },
+  });
 
   useEffect(() => {
     if (zipCode.length === 5 && /^\d+$/.test(zipCode)) {
@@ -68,10 +153,11 @@ const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     <SafeAreaProvider>
       <View style={styles.searchHeader}>
         <View style={styles.searchInputContainer}>
-          <AntDesign name="search1" size={20} color="#999" style={styles.searchIcon} />
+          <AntDesign name="search1" size={20} color={colors.text} style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
             placeholder="Enter a ZIP Code"
+            placeholderTextColor={colors.text}
             keyboardType="numeric"
             value={zipCode}
             onChangeText={setZipCode}
@@ -118,83 +204,5 @@ const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  searchHeader: {
-    flexDirection: 'row',
-    padding: 16,
-    alignItems: 'center',
-  },
-  searchInputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#EEEEEE',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-  },
-  searchIcon: {
-    marginRight: 0,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    padding: 10,
-  },
-  cancelButton: {
-    marginLeft: 8,
-  },
-  cancelButtonText: {
-    color: '#0A84FF',
-    fontSize: 16,
-  },
-  loader: {
-    marginTop: 16,
-  },
-  searchResult: {
-    padding: 16,
-    backgroundColor: '#f0f0f0',
-  },
-  resultText: {
-    fontSize: 18,
-  },
-  noResult: {
-    padding: 16,
-    fontSize: 16,
-    color: 'red',
-  },
-  favoritesTitle: {
-    padding: 16,
-    fontSize: 20,
-  },
-  favoritesList: {
-    paddingHorizontal: 16,
-  },
-  favoriteItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  favoriteButton: {
-    flex: 1,
-  },
-  favoriteTextCity: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  favoriteTextRegion: {
-    fontSize: 14,
-    color: '#666666',
-  },
-  deleteButton: {
-    marginLeft: 8,
-    padding: 8,
-    backgroundColor: 'white',
-  },
-  deleteButtonText: {
-    fontSize: 18,
-    color: '#0A84FF',
-  },
-});
 
 export default SearchScreen;

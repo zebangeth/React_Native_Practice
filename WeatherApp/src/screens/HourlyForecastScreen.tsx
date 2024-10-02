@@ -2,11 +2,59 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
+import { useTheme } from '@react-navigation/native';
 
 type HourlyForecastScreenProps = NativeStackScreenProps<MainStackParamList, 'HourlyForecast'>;
 
 const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) => {
+  const { colors } = useTheme();
   const { date, hourlyData, isMetric } = route.params;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      padding: 16,
+    },
+    date: {
+      fontSize: 18,
+      textAlign: 'center',
+      marginBottom: 16,
+      color: colors.text,
+    },
+    listContainer: {
+      paddingVertical: 8,
+    },
+    itemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderRadius: 10,
+      padding: 16,
+      marginBottom: 8,
+      justifyContent: 'space-between',
+    },
+    time: {
+      width: 60,
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    icon: {
+      width: 30,
+      height: 30,
+    },
+    temp: {
+      width: 80,
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    humidity: {
+      fontSize: 16,
+      color: colors.text,
+    },
+  });
 
   const currentHour = new Date().getHours();
 
@@ -42,47 +90,5 @@ const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) =>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    padding: 16,
-  },
-  date: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  listContainer: {
-    paddingVertical: 8,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#c8d6df',
-    borderRadius: 10,
-    padding: 16,
-    marginBottom: 8,
-    justifyContent: 'space-between',
-  },
-  time: {
-    width: 60,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-  temp: {
-    width: 80,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  humidity: {
-    fontSize: 16,
-  },
-});
 
 export default HourlyForecastScreen;

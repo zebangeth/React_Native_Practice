@@ -10,13 +10,34 @@ import WeatherDetails from '../components/WeatherDetails';
 import { getWeatherData } from '../api/weatherApi';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/types';
+import { useTheme } from '@react-navigation/native';
 
 type MainScreenProps = NativeStackScreenProps<MainStackParamList, 'Weather'>;
 
 const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
+  const { colors } = useTheme();
   const [zipCode, setZipCode] = useState<string>('');
   const [weatherData, setWeatherData] = useState<any>(null);
   const [isMetric, setIsMetric] = useState<boolean>(false);
+
+  const styles = StyleSheet.create({
+    scrollViewContent: {
+      flexGrow: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      flex: 1,
+    },
+    placeholder: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: colors.background,
+    },
+    placeholderText: {
+      color: colors.text,
+    },
+  });
 
   useEffect(() => {
     if (route.params && route.params.zipCode) {
@@ -53,7 +74,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
   return (
     <SafeAreaProvider>
       <Header onPressSearch={openSearchModal} />
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         alwaysBounceVertical={false}
       >
@@ -74,26 +95,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
           </View>
         ) : (
           <View style={styles.placeholder}>
-            <Text>Click on the search bar to enter a zip code</Text>
+            <Text style={styles.placeholderText}>
+              Click on the search bar to enter a zip code
+            </Text>
           </View>
         )}
       </ScrollView>
     </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  placeholder: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-});
 
 export default MainScreen;
