@@ -1,60 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; // Import icons
-import { addFavorite, deleteFavorite, getFavorites } from '../api/favoritesApi';
+import React, { useContext } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { FavoritesContext } from '../contexts/FavoritesContext';
 
 interface FavoritesManagerProps {
   currentZipCode: string;
   currentLocation: string;
-  onSelectFavorite: (zipCode: string) => void;
-  refreshTrigger: boolean; // Add refresh trigger prop
 }
 
-interface Favorite {
-  zipCode: string;
-  location: string;
-}
+const FavoritesManager: React.FC<FavoritesManagerProps> = ({ currentZipCode, currentLocation }) => {
+  const { addFavorite, isFavorite, loading } = useContext(FavoritesContext);
 
-const FavoritesManager: React.FC<FavoritesManagerProps> = ({
-  currentZipCode,
-  currentLocation,
-  onSelectFavorite,
-  refreshTrigger,
-}) => {
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const isFavorite = favorites.some((fav) => fav.zipCode === currentZipCode);
-
-  useEffect(() => {
-    loadFavorites();
-  }, [refreshTrigger]); // Reload favorites when refreshTrigger changes
-
-  const loadFavorites = async () => {
-    setLoading(true);
-    try {
-      const data = await getFavorites();
-      setFavorites(data);
-    } catch (error) {
-      console.error('Error loading favorites:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const favoriteExists = isFavorite(currentZipCode);
 
   const handleAddFavorite = async () => {
-    try {
-      await addFavorite(currentZipCode, currentLocation);
-      loadFavorites();
-    } catch (error) {
-      Alert.alert('Error', 'Unable to add to favorites.');
-    }
+    await addFavorite({ zipCode: currentZipCode, location: currentLocation });
   };
 
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator />
-      ) : isFavorite ? (
+      ) : favoriteExists ? (
         <AntDesign name="heart" size={24} color="red" />
       ) : (
         <TouchableOpacity onPress={handleAddFavorite} style={styles.addButton}>
