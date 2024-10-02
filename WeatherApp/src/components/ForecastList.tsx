@@ -1,28 +1,30 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 interface ForecastListProps {
   forecast: any[];
   isMetric: boolean;
+  onDayPress: (date: string, hourlyData: any[]) => void;
 }
 
-const ForecastList: React.FC<ForecastListProps> = ({ forecast, isMetric }) => {
+const ForecastList: React.FC<ForecastListProps> = ({ forecast, isMetric, onDayPress }) => {
   const renderForecastItem = (item: any) => {
     const highTemp = isMetric ? item.day.maxtemp_c : item.day.maxtemp_f;
     const lowTemp = isMetric ? item.day.mintemp_c : item.day.mintemp_f;
     const unit = isMetric ? '°C' : '°F';
-    const date = new Date(item.date).toLocaleDateString('en-US', {
+    const date = new Date(item.date + 'T00:00:00Z').toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
+      timeZone: 'UTC'
     });
 
     return (
-      <View key={item.date} style={styles.forecastItem}>
+      <TouchableOpacity key={item.date} onPress={() => onDayPress(item.date, item.hour)} style={styles.forecastItem}>
         <Text style={styles.date}>{date}</Text>
         <Image source={{ uri: `https:${item.day.condition.icon}` }} style={styles.icon} />
         <Text style={styles.temp}>{`High: ${Math.round(highTemp)}${unit}`}</Text>
         <Text style={styles.temp}>{`Low: ${Math.round(lowTemp)}${unit}`}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
