@@ -5,18 +5,18 @@ export const lightTheme: Theme = {
   colors: {
     primary: '#0A84FF',
     background: '#FFFFFF',
-    card: '#C3E1FF',
+    card: '#FFFFFF',
     text: '#000000',
     border: '#CCCCCC',
     notification: '#FF453A',
-    // Additional custom colors
+    // Custom colors
     placeholder: '#A9A9A9',
-    headerBackground: '#F8F8F8',
+    headerBackground: '#FFFFFF',
     headerText: '#000000',
     icon: '#000000',
     buttonBackground: '#EEEEEE',
     buttonText: '#000000',
-    cardBackground: '#F0F0F0',
+    cardBackground: '#C3E1FF',
   },
 };
 
@@ -29,9 +29,9 @@ export const darkTheme: Theme = {
     text: '#FFFFFF',
     border: '#272729',
     notification: '#FF453A',
-    // Additional custom colors
+    // Custom colors
     placeholder: '#A9A9A9',
-    headerBackground: '#1C1C1E',
+    headerBackground: '#000000',
     headerText: '#FFFFFF',
     icon: '#FFFFFF',
     buttonBackground: '#333333',

@@ -7,54 +7,8 @@ import { useTheme } from '@react-navigation/native';
 type HourlyForecastScreenProps = NativeStackScreenProps<MainStackParamList, 'HourlyForecast'>;
 
 const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) => {
-  const { colors } = useTheme();
   const { date, hourlyData, isMetric } = route.params;
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background,
-      padding: 16,
-    },
-    date: {
-      fontSize: 18,
-      textAlign: 'center',
-      marginBottom: 16,
-      color: colors.text,
-    },
-    listContainer: {
-      paddingVertical: 8,
-    },
-    itemContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors.card,
-      borderRadius: 10,
-      padding: 16,
-      marginBottom: 8,
-      justifyContent: 'space-between',
-    },
-    time: {
-      width: 60,
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.text,
-    },
-    icon: {
-      width: 30,
-      height: 30,
-    },
-    temp: {
-      width: 80,
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.text,
-    },
-    humidity: {
-      fontSize: 16,
-      color: colors.text,
-    },
-  });
+  const { colors } = useTheme();
 
   const currentHour = new Date().getHours();
 
@@ -69,18 +23,18 @@ const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) =>
     const humidity = item.humidity;
 
     return (
-      <View style={styles.itemContainer}>
-        <Text style={styles.time}>{time}</Text>
+      <View style={[styles.itemContainer, { backgroundColor: colors.cardBackground }]}>
+        <Text style={[styles.time, { color: colors.text }]}>{time}</Text>
         <Image source={{ uri: `https:${item.condition.icon}` }} style={styles.icon} />
-        <Text style={styles.temp}>{`${temp} ${unit}`}</Text>
-        <Text style={styles.humidity}>{`${humidity}%`}</Text>
+        <Text style={[styles.temp, { color: colors.text }]}>{`${temp} ${unit}`}</Text>
+        <Text style={[styles.humidity, { color: colors.text }]}>{`${humidity}%`}</Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.date}>{date}</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.date, { color: colors.text }]}>{date}</Text>
       <FlatList
         data={filteredHourlyData}
         keyExtractor={(item) => item.time_epoch.toString()}
@@ -90,5 +44,45 @@ const HourlyForecastScreen: React.FC<HourlyForecastScreenProps> = ({ route }) =>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  date: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  listContainer: {
+    paddingVertical: 8,
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 8,
+    justifyContent: 'space-between',
+  },
+  time: {
+    width: 60,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: 30,
+    height: 30,
+  },
+  temp: {
+    width: 80,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  humidity: {
+    fontSize: 16,
+  },
+});
 
 export default HourlyForecastScreen;

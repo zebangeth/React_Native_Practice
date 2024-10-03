@@ -11,34 +11,32 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onPressSearch }) => {
   const { colors } = useTheme();
 
-  const styles = StyleSheet.create({
-    header: {
-      padding: 16,
-    },
-    searchBar: {
-      backgroundColor: colors.card,
-      borderRadius: 8,
-      padding: 12,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    searchText: {
-      color: colors.text,
-      fontSize: 16,
-    },
-    icon: {
-      marginRight: 8,
-    },
-  });
-
   return (
-    <SafeAreaView style={styles.header}>
-      <TouchableOpacity onPress={onPressSearch} style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color={colors.text} style={styles.icon} />
-        <Text style={styles.searchText}>Enter a ZIP Code</Text>
+    <SafeAreaView style={[styles.header, { backgroundColor: colors.headerBackground }]}>
+      <TouchableOpacity onPress={onPressSearch} style={[styles.searchBar, { backgroundColor: colors.buttonBackground }]}>
+        <AntDesign name="search1" size={20} color={colors.icon} style={styles.icon} />
+        <Text style={[styles.searchText, { color: colors.text }]}>Enter a ZIP Code</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    padding: 16,
+  },
+  searchBar: {
+    borderRadius: 8,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchText: {
+    fontSize: 16,
+  },
+  icon: {
+    marginRight: 8,
+  },
+});
 
 export default Header;

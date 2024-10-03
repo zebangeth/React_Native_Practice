@@ -9,30 +9,9 @@ interface FavoritesManagerProps {
   currentLocation: string;
 }
 
-const FavoritesManager: React.FC<FavoritesManagerProps> = ({
-  currentZipCode,
-  currentLocation,
-}) => {
-  const { colors } = useTheme();
+const FavoritesManager: React.FC<FavoritesManagerProps> = ({ currentZipCode, currentLocation }) => {
   const { addFavorite, isFavorite, loading } = useContext(FavoritesContext);
-
-  const styles = StyleSheet.create({
-    container: {
-      alignItems: 'center',
-      marginVertical: 16,
-    },
-    addButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    addButtonText: {
-      color: colors.primary,
-      fontSize: 16,
-    },
-    icon: {
-      marginRight: 8,
-    },
-  });
+  const { colors } = useTheme();
 
   const favoriteExists = isFavorite(currentZipCode);
 
@@ -43,17 +22,34 @@ const FavoritesManager: React.FC<FavoritesManagerProps> = ({
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={colors.primary} />
       ) : favoriteExists ? (
-        <AntDesign name="heart" size={24} color={colors.primary} />
+        <AntDesign name="heart" size={24} color="red" />
       ) : (
         <TouchableOpacity onPress={handleAddFavorite} style={styles.addButton}>
-          <AntDesign name="hearto" size={24} color={colors.primary} style={styles.icon} />
-          <Text style={styles.addButtonText}>Add to Favorites</Text>
+          <AntDesign name="hearto" size={24} color="red" style={styles.icon} />
+          <Text style={[styles.addButtonText, { color: colors.primary }]}>Add to Favorites</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addButtonText: {
+    fontSize: 16,
+  },
+  icon: {
+    marginRight: 8,
+  },
+});
 
 export default FavoritesManager;

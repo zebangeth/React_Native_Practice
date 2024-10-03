@@ -10,34 +10,6 @@ interface WeatherDetailsProps {
 const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data, isMetric }) => {
   const { colors } = useTheme();
 
-  const styles = StyleSheet.create({
-    container: {
-      marginVertical: 16,
-      paddingHorizontal: 16,
-    },
-    card: {
-      backgroundColor: colors.card,
-      borderRadius: 10,
-      padding: 16,
-      marginBottom: 16,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    label: {
-      fontSize: 18,
-      color: colors.text,
-    },
-    value: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.text,
-    },
-  });
-
   if (!data) {
     return null;
   }
@@ -50,25 +22,48 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({ data, isMetric }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: colors.cardBackground }]}>
         <View style={styles.row}>
-          <Text style={styles.label}>Sunrise: </Text>
-          <Text style={styles.value}>{sunrise}</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Sunrise: </Text>
+          <Text style={[styles.value, { color: colors.text }]}>{sunrise}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Sunset: </Text>
-          <Text style={styles.value}>{sunset}</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Sunset: </Text>
+          <Text style={[styles.value, { color: colors.text }]}>{sunset}</Text>
         </View>
       </View>
-      <View style={styles.card}>
-        <Text style={styles.label}>Wind:</Text>
-        <Text style={styles.value}>
-          {windSpeed} {windUnit}
-        </Text>
-        <Text style={styles.value}>{windDir}</Text>
+      <View style={[styles.card, { backgroundColor: colors.cardBackground }]}>
+        <Text style={[styles.label, { color: colors.text }]}>Wind:</Text>
+        <Text style={[styles.value, { color: colors.text }]}>{windSpeed} {windUnit}</Text>
+        <Text style={[styles.value, { color: colors.text }]}>{windDir}</Text>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 16,
+    paddingHorizontal: 16,
+  },
+  card: {
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  label: {
+    fontSize: 18,
+  },
+  value: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
 
 export default WeatherDetails;
