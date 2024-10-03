@@ -10,7 +10,6 @@ After installing Android Studio, you can run the following command to start the 
 ```bash
 cd path/to/this/project
 cd WeatherApp
-npm install
 npm start
 ```
 
