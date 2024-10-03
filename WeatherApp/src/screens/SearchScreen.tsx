@@ -68,7 +68,7 @@ const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.searchHeader}>
-        <View style={[styles.searchInputContainer, { backgroundColor: colors.card }]}>
+        <View style={[styles.searchInputContainer, { backgroundColor: colors.buttonBackground }]}>
           <AntDesign name="search1" size={20} color={colors.icon} style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, { color: colors.text }]}
