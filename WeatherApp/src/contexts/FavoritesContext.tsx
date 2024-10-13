@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface Favorite {
+export interface Favorite {
   zipCode: string;
   location: string;
+  backgroundImageUri?: string;
+  invertTextColor?: boolean;
 }
 
 interface FavoritesContextProps {
@@ -11,6 +13,8 @@ interface FavoritesContextProps {
   addFavorite: (favorite: Favorite) => Promise<void>;
   removeFavorite: (zipCode: string) => Promise<void>;
   isFavorite: (zipCode: string) => boolean;
+  updateFavorite: (zipCode: string, updates: Partial<Favorite>) => Promise<void>;
+  getFavoriteByZipCode: (zipCode: string) => Favorite | undefined;
   loading: boolean;
 }
 
@@ -19,6 +23,8 @@ export const FavoritesContext = createContext<FavoritesContextProps>({
   addFavorite: async () => {},
   removeFavorite: async () => {},
   isFavorite: () => false,
+  updateFavorite: async () => {},
+  getFavoriteByZipCode: () => undefined,
   loading: false,
 });
 
@@ -69,8 +75,22 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     return favorites.some(fav => fav.zipCode === zipCode);
   };
 
+  const updateFavorite = async (zipCode: string, updates: Partial<Favorite>) => {
+    const index = favorites.findIndex(fav => fav.zipCode === zipCode);
+    if (index !== -1) {
+      const updatedFavorite = { ...favorites[index], ...updates };
+      const updatedFavorites = [...favorites];
+      updatedFavorites[index] = updatedFavorite;
+      await saveFavorites(updatedFavorites);
+    }
+  };
+
+  const getFavoriteByZipCode = (zipCode: string): Favorite | undefined => {
+    return favorites.find(fav => fav.zipCode === zipCode);
+  };
+
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, isFavorite, loading }}>
+    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, isFavorite, updateFavorite, getFavoriteByZipCode, loading }}>
       {children}
     </FavoritesContext.Provider>
   );

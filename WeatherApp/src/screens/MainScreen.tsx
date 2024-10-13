@@ -13,7 +13,7 @@ import { MainStackParamList } from '../navigation/types';
 import { useTheme } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import * as SplashScreen from 'expo-splash-screen';
-import { FavoritesContext } from '../contexts/FavoritesContext';
+import { FavoritesContext, Favorite } from '../contexts/FavoritesContext';
 import { getZipCode } from '../api/geoapifyApi';
 
 type MainScreenProps = NativeStackScreenProps<MainStackParamList, 'Weather'>;
@@ -28,7 +28,9 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
-  const { getFavoriteByZipCode } = useContext(FavoritesContext);
+  const { getFavoriteByZipCode, favorites } = useContext(FavoritesContext);
+
+  const [favoriteData, setFavoriteData] = useState<Favorite | undefined>(undefined);
 
   const styles = StyleSheet.create({
     scrollViewContent: {
@@ -65,6 +67,15 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
       requestLocationPermission();
     }
   }, [route.params]);
+
+  useEffect(() => {
+    if (zipCode) {
+      const favorite = getFavoriteByZipCode(zipCode);
+      setFavoriteData(favorite);
+    } else {
+      setFavoriteData(undefined);
+    }
+  }, [zipCode, favorites]);
 
   const requestLocationPermission = async () => {
     try {
@@ -151,10 +162,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
                     <CurrentWeather
                       data={weatherData}
                       isMetric={isMetric}
+                      backgroundImageUri={favoriteData?.backgroundImageUri}
+                      invertTextColor={favoriteData?.invertTextColor}
                     />
                     <FavoritesManager
                       currentZipCode={zipCode}
                       currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
+                      navigation={navigation}
                     />
                   </View>
                   <View style={styles.rightColumn}>
@@ -172,10 +186,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
                   <CurrentWeather
                     data={weatherData}
                     isMetric={isMetric}
+                    backgroundImageUri={favoriteData?.backgroundImageUri}
+                    invertTextColor={favoriteData?.invertTextColor}
                   />
                   <FavoritesManager
                     currentZipCode={zipCode}
                     currentLocation={`${weatherData.location.name}, ${weatherData.location.region}`}
+                    navigation={navigation}
                   />
                   <WeatherDetails data={weatherData} isMetric={isMetric} />
                   <ForecastList
