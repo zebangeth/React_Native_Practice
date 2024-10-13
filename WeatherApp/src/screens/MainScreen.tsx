@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, useWindowDimensions, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import CurrentWeather from '../components/CurrentWeather';
@@ -15,6 +15,8 @@ import * as Location from 'expo-location';
 import * as SplashScreen from 'expo-splash-screen';
 import { FavoritesContext, Favorite } from '../contexts/FavoritesContext';
 import { getZipCode } from '../api/geoapifyApi';
+import { useOrientation } from '../hooks/useOrientation';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 type MainScreenProps = NativeStackScreenProps<MainStackParamList, 'Weather'>;
 
@@ -26,11 +28,16 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [isMetric, setIsMetric] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { width, height } = useWindowDimensions();
-  const isLandscape = width > height;
   const { getFavoriteByZipCode, favorites } = useContext(FavoritesContext);
 
+  // New state to hold the favorite data for the current zip code
   const [favoriteData, setFavoriteData] = useState<Favorite | undefined>(undefined);
+
+  // Use the custom hook to get the current orientation
+  const orientation = useOrientation();
+  const isLandscape =
+    orientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+    orientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
 
   const styles = StyleSheet.create({
     scrollViewContent: {
@@ -141,8 +148,6 @@ const MainScreen: React.FC<MainScreenProps> = ({ route, navigation }) => {
   const handleDayPress = (date: string, hourlyData: any[]) => {
     navigation.navigate('HourlyForecast', { date, hourlyData, isMetric });
   };
-
-  const favorite = getFavoriteByZipCode(zipCode);
 
   return (
     <SafeAreaProvider>

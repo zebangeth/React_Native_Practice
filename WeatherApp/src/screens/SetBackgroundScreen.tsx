@@ -7,6 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import CurrentWeather from '../components/CurrentWeather';
 import { getWeatherData } from '../api/weatherApi';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type SetBackgroundScreenProps = NativeStackScreenProps<MainStackParamList, 'SetBackground'>;
 
@@ -62,7 +63,7 @@ const SetBackgroundScreen: React.FC<SetBackgroundScreenProps> = ({ route, naviga
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       {!backgroundImageUri ? (
         <TouchableOpacity onPress={pickImage} style={styles.button}>
           <Text style={[styles.buttonText, { color: colors.primary }]}>Choose Image</Text>
@@ -92,7 +93,7 @@ const SetBackgroundScreen: React.FC<SetBackgroundScreenProps> = ({ route, naviga
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
